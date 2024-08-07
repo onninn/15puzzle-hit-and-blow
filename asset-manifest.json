@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/15puzzle-hit-and-blow/static/css/main.fb049697.css",
+    "main.js": "/15puzzle-hit-and-blow/static/js/main.4ff40d66.js",
+    "static/js/453.23e98748.chunk.js": "/15puzzle-hit-and-blow/static/js/453.23e98748.chunk.js",
+    "index.html": "/15puzzle-hit-and-blow/index.html",
+    "main.fb049697.css.map": "/15puzzle-hit-and-blow/static/css/main.fb049697.css.map",
+    "main.4ff40d66.js.map": "/15puzzle-hit-and-blow/static/js/main.4ff40d66.js.map",
+    "453.23e98748.chunk.js.map": "/15puzzle-hit-and-blow/static/js/453.23e98748.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fb049697.css",
+    "static/js/main.4ff40d66.js"
+  ]
+}
