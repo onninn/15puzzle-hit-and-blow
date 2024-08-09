@@ -9,6 +9,8 @@ const FifteenPuzzle = () => {
   const [solvedWithHiddenNumbers, setSolvedWithHiddenNumbers] = useState(true);
   const [hasBeenSolved, setHasBeenSolved] = useState(false);
   const [showRules, setShowRules] = useState(false);
+  const [difficulty, setDifficulty] = useState('easy');
+  const [indicatorUpdateCount, setIndicatorUpdateCount] = useState(0);
 
   useEffect(() => {
     initializeBoard();
@@ -67,6 +69,7 @@ const FifteenPuzzle = () => {
   };
 
   const handleShuffleClick = () => {
+    setIndicatorUpdateCount(1);
     initializeBoard();
   };
 
@@ -86,6 +89,12 @@ const FifteenPuzzle = () => {
         setShowNumbers(true);
       }
     }
+  };
+
+  const handleDifficultyChange = (newDifficulty) => {
+    setDifficulty(newDifficulty);
+    setIndicatorUpdateCount(1);
+    initializeBoard();
   };
 
   const canMove = (index, emptyIndex) => {
@@ -132,6 +141,11 @@ const FifteenPuzzle = () => {
 
     setRowIndicators(newRowIndicators);
     setColIndicators(newColIndicators);
+    setIndicatorUpdateCount(prevCount => prevCount + 1);
+  };
+
+  const shouldShowIndicator = () => {
+    return difficulty === 'easy' || (difficulty === 'hard' && indicatorUpdateCount % 2 === 0);
   };
 
   const isSolved = (currentBoard) => {
@@ -173,9 +187,29 @@ const FifteenPuzzle = () => {
     </div>
   );
 
+  // 難易度選択コンポーネント
+  const DifficultySelector = () => (
+    <div className="flex justify-center space-x-2 mb-4">
+      {['easy', 'hard'].map((level) => ( // 難易度を 'easy' と 'hard' のみに変更
+        <button
+          key={level}
+          onClick={() => handleDifficultyChange(level)}
+          className={`px-3 py-1 rounded capitalize ${
+            difficulty === level
+              ? 'bg-blue-500 text-white'
+              : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+          } transition-colors duration-200`}
+        >
+          {level}
+        </button>
+      ))}
+    </div>
+  );
+
   // メインのゲーム画面
   const GameScreen = () => (
     <div className="bg-white p-4 rounded-lg shadow-lg">
+      <DifficultySelector />
       <div className="flex justify-between mb-2">
         <button
           onClick={handleShuffleClick}
@@ -206,10 +240,10 @@ const FifteenPuzzle = () => {
               className="flex flex-col items-center w-16"
             >
               <span className="w-8 h-8 flex items-center justify-center text-xl font-bold rounded-full bg-yellow-500 text-white">
-                {indicator.bite}
+                {shouldShowIndicator() ? indicator.bite : '-'}
               </span>
               <span className="w-8 h-8 flex items-center justify-center text-xl font-bold rounded-full bg-green-500 text-white mt-1">
-                {indicator.eat}
+                {shouldShowIndicator() ? indicator.eat : '-'}
               </span>
             </div>
           ))}
@@ -240,10 +274,10 @@ const FifteenPuzzle = () => {
           {/* 行インジケーター */}
           <div className="ml-4 flex items-center w-20">
             <span className="w-8 h-8 flex items-center justify-center text-xl font-bold rounded-full bg-green-500 text-white mr-2">
-              {rowIndicators[row]?.eat || 0}
+              {shouldShowIndicator() ? rowIndicators[row]?.eat || 0 : '-'}
             </span>
             <span className="w-8 h-8 flex items-center justify-center text-xl font-bold rounded-full bg-yellow-500 text-white">
-              {rowIndicators[row]?.bite || 0}
+              {shouldShowIndicator() ? rowIndicators[row]?.bite || 0 : '-'}
             </span>
           </div>
         </div>
